@@ -1,7 +1,12 @@
 package gui;
 
 import game.Drawable;
+import game.Drawable.DrawType;
+import game.Drawable.DrawingLayout;
+import game.FillBar;
 import game.GameObject;
+import game.Actor;
+import game.ActorCollection;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,87 +15,72 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 public class GameScreen extends JComponent{
-	private ArrayList<Drawable> backgroundComponents;
-	private ArrayList<Drawable> backComponents;
-	private ArrayList<Drawable> middleComponents;
-	private ArrayList<Drawable> frontComponents;
-	private ArrayList<Drawable> menuComponents;
-	private Drawable centerObject;
+	private ActorCollection actorCollection;
 	
 	GameScreen(){
 		super();
-		backgroundComponents = new ArrayList<>();
-		backComponents = new ArrayList<>();
-		middleComponents = new ArrayList<>();
-		frontComponents = new ArrayList<>();
-		menuComponents = new ArrayList<>();
+		actorCollection = new ActorCollection();
 	}
 	
-	public void addGameComponent(Drawable object){
-		switch(object.getDrawingLayout()){
-		case BACKGROUND:
-			backgroundComponents.add(object);
-			break;
-		case BACK:
-			backComponents.add(object);
-			break;
-		case MIDDLE:
-			middleComponents.add(object);
-			break;
-		case FRONT:
-			frontComponents.add(object);
-			break;
-		case MENU:
-			menuComponents.add(object);
-			break;
-		}
+	public void addActor(Actor actor){
+		actorCollection.addActor(actor);
 	}
 	
-	public void addCenterObject(Drawable object){
-		centerObject = object;
-		addGameComponent(object);
+	public void removeActor(Actor actor){
+		actorCollection.removeActor(actor);
 	}
-		
-	public void paint(Graphics g){
-		Graphics2D g2 = (Graphics2D)g;
-		ArrayList<Drawable> components = new ArrayList<>();
-		components.addAll(backgroundComponents);
-		components.addAll(backComponents);
-		components.addAll(middleComponents);
-		components.addAll(frontComponents);
-		components.addAll(menuComponents);
-		for(Drawable object : components){
+	
+	public void addActorCollection(ActorCollection actorCollection){
+		this.actorCollection = actorCollection;
+	}
+	
+	public void paintGameScreen(Actor centerObject, Graphics2D g2, ActorCollection collection){
+		for(Actor actor : collection.getActorCollection()){
 			int centerX, centerY, x, y, height, width;
 			double theta;
 			centerX = getWidth()/2-centerObject.getWidth()/2;
 			centerY = getHeight()/2-centerObject.getHeight()/2;
-			height = object.getHeight();
-			width = object.getWidth();
-			theta = object.getTheta();
-			if(object instanceof GameObject && object.equals(centerObject)){
+			height = actor.getHeight();
+			width = actor.getWidth();
+			theta = actor.getTheta();
+			if(actor.equals(centerObject)){
 				x = centerX;
 				y = centerY;
 			}
 			else{
 				x = centerObject.getX()-centerX;
 				y = centerObject.getY()-centerY;
-				x = object.getX()-x;
-				y = object.getY()-y;
+				x = actor.getX()-x;
+				y = actor.getY()-y;
 			}
-			g2.setColor(object.getColor());
+			g2.setColor(actor.getColor());
+			g2.setFont(actor.getFont());
 			g2.rotate(theta, x + (double)width/2, y + (double)height/2);
-			Drawable.DrawType drawType = object.getDrawType();
+			Drawable.DrawType drawType = actor.getDrawType();
+			
 			switch(drawType){
 			case IMAGE:
-				g2.drawImage(object.getImage(), x, y, this);
+				g2.drawImage(actor.getImage(), x, y, this);
 				break;
 			case TEXT:
-				g2.drawString(object.getString(), x, y);
+				g2.drawString(actor.getText(), x, y);
 				break;
-			case FILLOVAL:
+			case BAR:
+				g2.fillRect(x, y, (int)((double)actor.getWidth()*((FillBar)actor).getPercent()/100),
+					actor.getHeight());
+				break;
+			case COLLECTION:
+				paintGameScreen(centerObject, g2, (ActorCollection)actor);
+				break;
+			case EMPTY_PAWN:
 				break;
 			}
 			g2.rotate(-theta, x + (double)width/2, y + (double)height/2);
 		}
+	}
+		
+	public void paint(Graphics g){
+		Graphics2D g2 = (Graphics2D)g;
+		paintGameScreen(actorCollection.getCenterActor(), g2, actorCollection);
 	}
 }

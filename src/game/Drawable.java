@@ -1,13 +1,16 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 
 public interface Drawable {
 	public enum DrawType{
 		IMAGE,
 		TEXT,
-		FILLOVAL
+		BAR,
+		COLLECTION,
+		EMPTY_PAWN
 	}
 	public enum DrawingLayout{
 		BACKGROUND,
@@ -22,9 +25,9 @@ public interface Drawable {
 	public abstract int getY();
 	public abstract double getTheta();
 	public abstract Image getImage();
-	public abstract String getString();
+	public abstract String getText();
 	public abstract Color getColor();
 	public abstract DrawType getDrawType();
 	public abstract DrawingLayout getDrawingLayout();
-	public abstract boolean isRenderedAtSight();
+	public abstract Font getFont();
 }

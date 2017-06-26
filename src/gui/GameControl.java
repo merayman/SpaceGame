@@ -10,23 +10,27 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import game.GameObject;
-import game.SpaceGame;
+import game.Level;
 import game.Drawable;
 
 public class GameControl implements KeyListener, MouseListener, MouseMotionListener{
-	private SpaceGame spaceGame;
-	private boolean K_UP = false, K_LEFT = false, K_RIGHT = false;
+	private Level spaceGame;
 	private GameScreen gameScreen;
+	private boolean K_UP = false, K_LEFT = false, K_RIGHT = false, K_DOWN = false;
 	
-	public GameControl(GameScreen gameScreen){
+	public GameControl(Level spaceGame, GameScreen gameScreen){
+		this.spaceGame = spaceGame;
 		this.gameScreen = gameScreen;
-		spaceGame = new SpaceGame(gameScreen);
 		spaceGame.atStart();
 		Timer gameTimer = new Timer();
 		TimerTask frame = new TimerTask(){
 			public void run() {
 				if(K_UP){
 					spaceGame.upPressed();
+				}
+				
+				if(K_DOWN){
+					spaceGame.downPressed();
 				}
 				
 				if(K_LEFT){
@@ -46,19 +50,20 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 	
 	private Point getArtificialCenter(){
 		Point artificialCenter = new Point();
-		GameObject centerObject = spaceGame.getCenterObject();
+		GameObject centerObject = spaceGame.getCenterActor();
 		int x, y;
-		x = gameScreen.getWidth()/2-((Drawable)centerObject).getWidth()/2;
-		y = gameScreen.getHeight()/2-((Drawable)centerObject).getHeight()/2;
-		x = ((Drawable)centerObject).getX()-x;
-		y = ((Drawable)centerObject).getY()-y;
+		x = gameScreen.getWidth()/2-centerObject.getWidth()/2;
+		y = gameScreen.getHeight()/2-centerObject.getHeight()/2;
+		x = centerObject.getX()-x;
+		y = centerObject.getY()-y;
 		artificialCenter.setLocation(x, y);
 		return artificialCenter;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//System.out.println("mouse clicked");
+		Point artificialCenter = getArtificialCenter();
+		spaceGame.mousePressed(e.getX() + (int)artificialCenter.getX(), e.getY() + (int)artificialCenter.getY());
 	}
 
 	@Override
@@ -98,6 +103,9 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 			
 		if(keyCode==KeyEvent.VK_D || keyCode==KeyEvent.VK_RIGHT)
 			K_RIGHT = true;
+		
+		if(keyCode==KeyEvent.VK_S || keyCode==KeyEvent.VK_DOWN)
+			K_DOWN = true;
 	}
 
 	@Override
@@ -111,12 +119,14 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 			
 		if(keyCode==KeyEvent.VK_D || keyCode==KeyEvent.VK_RIGHT)
 			K_RIGHT = false;
+		
+		if(keyCode==KeyEvent.VK_S || keyCode==KeyEvent.VK_DOWN)
+			K_DOWN = false;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		Point artificialCenter = getArtificialCenter();
-		spaceGame.mousePressed(e.getX() + (int)artificialCenter.getX(), e.getY() + (int)artificialCenter.getY());
+		
 	}
 
 	@Override

@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import game.Drawable;
+import game.Drawable.DrawType;
+import game.Drawable.DrawingLayout;
+import game.Level;
 
 import java.awt.Color;
 import java.awt.event.MouseMotionAdapter;
@@ -46,8 +49,10 @@ public class GameFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		GameScreen gameScreen = new GameScreen();
+		Level spaceGame = new Level();
+		gameScreen.addActorCollection(spaceGame);
 		contentPane.add(gameScreen, BorderLayout.CENTER);
-		GameControl gameControl = new GameControl(gameScreen);
+		GameControl gameControl = new GameControl(spaceGame, gameScreen);
 		addKeyListener(gameControl);
 		addMouseListener(gameControl);
 		addMouseMotionListener(gameControl);

@@ -1,6 +1,6 @@
 package game;
 
-public abstract class GameObject {
+public abstract class GameObject implements Drawable{
 	private static int numOfObject = 0;
 	private int ID;
 	public abstract void atStart();
