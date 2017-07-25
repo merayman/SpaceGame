@@ -8,10 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import game.Drawable;
-import game.Drawable.DrawType;
-import game.Drawable.DrawingLayout;
-import game.Level;
+import engine.*;
+import game.*;
 
 import java.awt.Color;
 import java.awt.event.MouseMotionAdapter;
@@ -48,11 +46,17 @@ public class GameFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		//Game screen
 		GameScreen gameScreen = new GameScreen();
-		Level spaceGame = new Level();
-		gameScreen.addActorCollection(spaceGame);
 		contentPane.add(gameScreen, BorderLayout.CENTER);
+		//initialize the entrance
+		Entrance entranceLevel = new Entrance();
+		//set the game
+		SpaceGame spaceGame = new SpaceGame();
+		//create game control
 		GameControl gameControl = new GameControl(spaceGame, gameScreen);
+		//add listeners
 		addKeyListener(gameControl);
 		addMouseListener(gameControl);
 		addMouseMotionListener(gameControl);

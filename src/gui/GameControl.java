@@ -9,39 +9,50 @@ import java.awt.event.MouseMotionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import game.GameObject;
-import game.Level;
-import game.Drawable;
+import game.*;
+import engine.*;
+import engine.Level.MouseCode;
 
 public class GameControl implements KeyListener, MouseListener, MouseMotionListener{
-	private Level spaceGame;
+	private Game spaceGame;
 	private GameScreen gameScreen;
-	private boolean K_UP = false, K_LEFT = false, K_RIGHT = false, K_DOWN = false;
+	private Level currentLevel;
+	private boolean K_UP = false, K_LEFT = false, K_RIGHT = false, K_DOWN = false,
+			K_SPACE = false;
 	
-	public GameControl(Level spaceGame, GameScreen gameScreen){
-		this.spaceGame = spaceGame;
+	public GameControl(Game game, GameScreen gameScreen){
+		currentLevel = game.getLevel();
+		gameScreen.setActorCollection(currentLevel);
+		this.spaceGame = game;
 		this.gameScreen = gameScreen;
 		spaceGame.atStart();
 		Timer gameTimer = new Timer();
 		TimerTask frame = new TimerTask(){
 			public void run() {
 				if(K_UP){
-					spaceGame.upPressed();
+					spaceGame.getLevel().upPressed();
 				}
 				
 				if(K_DOWN){
-					spaceGame.downPressed();
+					spaceGame.getLevel().downPressed();
 				}
 				
 				if(K_LEFT){
-					spaceGame.leftPressed();
+					spaceGame.getLevel().leftPressed();
 				}
 					
 				if(K_RIGHT){
-					spaceGame.rightPressed();
+					spaceGame.getLevel().rightPressed();
 				}
 				
+				if(K_SPACE)
+					spaceGame.getLevel().spacePressed();
+				
 				spaceGame.tick();
+				if(currentLevel!=spaceGame.getLevel()){
+					currentLevel = spaceGame.getLevel();
+					gameScreen.setActorCollection(spaceGame.getLevel());
+				}
 				gameScreen.repaint();
 			}
 		};
@@ -50,7 +61,7 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 	
 	private Point getArtificialCenter(){
 		Point artificialCenter = new Point();
-		GameObject centerObject = spaceGame.getCenterActor();
+		Actor centerObject = spaceGame.getLevel().getCenterActor();
 		int x, y;
 		x = gameScreen.getWidth()/2-centerObject.getWidth()/2;
 		y = gameScreen.getHeight()/2-centerObject.getHeight()/2;
@@ -63,33 +74,16 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Point artificialCenter = getArtificialCenter();
-		spaceGame.mousePressed(e.getX() + (int)artificialCenter.getX(), e.getY() + (int)artificialCenter.getY());
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		//System.out.println("key typed");
+		if(e.getButton()==MouseEvent.BUTTON1){
+			spaceGame.getLevel().mousePressed(MouseCode.RIGHT,
+					e.getX() + (int)artificialCenter.getX(),
+					e.getY() + (int)artificialCenter.getY());
+		}
+		else if(e.getButton()==MouseEvent.BUTTON2){
+			spaceGame.getLevel().mousePressed(MouseCode.LEFT,
+					e.getX() + (int)artificialCenter.getX(),
+					e.getY() + (int)artificialCenter.getY());
+		}
 	}
 
 	@Override
@@ -106,6 +100,11 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 		
 		if(keyCode==KeyEvent.VK_S || keyCode==KeyEvent.VK_DOWN)
 			K_DOWN = true;
+		
+		//if(keyCode==KeyEvent.VK_SPACE)
+			//K_SPACE = true;
+		if(keyCode==KeyEvent.VK_SPACE)
+			spaceGame.getLevel().spacePressed();
 	}
 
 	@Override
@@ -122,10 +121,14 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 		
 		if(keyCode==KeyEvent.VK_S || keyCode==KeyEvent.VK_DOWN)
 			K_DOWN = false;
+		
+		if(keyCode==KeyEvent.VK_SPACE)
+			K_SPACE = false;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -134,6 +137,35 @@ public class GameControl implements KeyListener, MouseListener, MouseMotionListe
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

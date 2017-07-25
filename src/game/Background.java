@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import engine.Actor;
+import engine.ActorCollection;
+
 public class Background extends ActorCollection{
 
 	public Background() {
