@@ -1,7 +1,7 @@
 package engine;
 
 public abstract class Level extends ActorCollection{
-	private Level next;
+	private Level next = null;
 	private boolean isLevelFinished = false;
 	
 	public enum MouseCode{

@@ -34,6 +34,31 @@ public class Actor extends GameObject implements Drawable{
 		rotateDegrees = 0;
 	}
 	
+	public int getHeight() { return height; }
+	public int getWidth() { return width; }
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public int getRotateDegrees(){ return rotateDegrees; }
+	public Image getImage() { return img; }
+	public String getText() { return text; }
+	public Color getColor() { return color; }
+	public DrawType getDrawType() { return drawType; }
+	public DrawingLayout getDrawingLayout() { return drawingLayout; }
+	public Font getFont() { return font; }
+	public double getTheta() { return Math.toRadians(rotateDegrees); }
+	
+	public void setHeight(int height) { this.height = height; }
+	public void setWidth(int width) { this.width = width; }
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
+	public void setRotateDegrees(int rotateDegrees){ this.rotateDegrees = rotateDegrees; }
+	public void setImage(Image img) { this.img = img; }
+	public void setText(String text) { this.text = text; }
+	public void setColor(Color color) { this.color = color; }
+	public void setDrawType(DrawType drawType) { this.drawType = drawType; }
+	public void setDrawingLayout(DrawingLayout drawingLayout) { this.drawingLayout = drawingLayout; }
+	public void setFont(Font font) { this.font = font; }
+	
 	public ArrayList<Actor> getOverlappingActors(Level level){
 		ArrayList<Actor> overlappingActors = new ArrayList<Actor>();
 		ArrayList<Actor> actorsInLevel = level.getActorCollection();
@@ -62,98 +87,6 @@ public class Actor extends GameObject implements Drawable{
 		isOverlapping = (this.x + this.width) > actor.getX() && (this.y + this.height) > actor.getY() &&
 				this.x < (actor.getX() + actor.getWidth()) && this.y < (actor.getY() + actor.getHeight());
 		return isOverlapping;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public double getTheta() {
-		return Math.toRadians(rotateDegrees);
-	}
-
-	public Image getImage() {
-		return img;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public DrawType getDrawType() {
-		return drawType;
-	}
-
-	public DrawingLayout getDrawingLayout() {
-		return drawingLayout;
-	}
-	
-	public Font getFont() {
-		return font;
-	}
-	
-	public int getRotateDegrees(){
-		return rotateDegrees;
-	}
-	
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public void setRotateDegrees(int rotateDegrees){
-		this.rotateDegrees = rotateDegrees;
-	}
-
-	public void setImage(Image img) {
-		this.img = img;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public void setDrawType(DrawType drawType) {
-		this.drawType = drawType;
-	}
-
-	public void setDrawingLayout(DrawingLayout drawingLayout) {
-		this.drawingLayout = drawingLayout;
-	}
-	
-	public void setFont(Font font) {
-		this.font = font;
 	}
 
 	public void atStart() {

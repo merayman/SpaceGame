@@ -39,7 +39,7 @@ public class ActorCollection extends Actor{
 			menuActors.add(actor);
 			break;
 		}
-		int maxHeight = Integer.MIN_VALUE, maxWidth = Integer.MIN_VALUE;
+		/*int maxHeight = Integer.MIN_VALUE, maxWidth = Integer.MIN_VALUE;
 		for(Actor a : getActorCollection()){
 			if(a.getHeight()>maxHeight)
 				maxHeight = a.getHeight();
@@ -47,7 +47,7 @@ public class ActorCollection extends Actor{
 				maxWidth = a.getWidth();
 		}
 		setHeight(maxHeight);
-		setWidth(maxWidth);
+		setWidth(maxWidth);*/
 		actor.atStart();
 	}
 	

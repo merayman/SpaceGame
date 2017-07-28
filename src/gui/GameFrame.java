@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.GameControl;
 import engine.*;
 import game.*;
 
@@ -16,7 +17,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameFrame extends JFrame {
-
+	
 	private JPanel contentPane;
 	
 	/**
@@ -40,12 +41,13 @@ public class GameFrame extends JFrame {
 	 */
 	public GameFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.BLACK);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		setUndecorated(true);
 		
 		//Game screen
 		GameScreen gameScreen = new GameScreen();

@@ -14,7 +14,7 @@ public class Entrance extends Level{
 		img.setWidth(733);
 		img.setHeight(294);
 		addCenterActor(img);
-		setNextLevel(new FirstMap());
+		setNextLevel(new SpaceLevel());
 	}
 	
 	@Override
